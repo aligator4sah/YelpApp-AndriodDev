@@ -32,6 +32,7 @@ public class BackendListFragment extends Fragment {
 
     private static final String TAG = BackendListFragment.class.getSimpleName();
     private ListView mListView;
+    private LocationTracker locationTracker;
 
     public BackendListFragment() {
         // Required empty public constructor
@@ -50,7 +51,11 @@ public class BackendListFragment extends Fragment {
     }
 
     public void getNearbyRestaurantThroughBackend() {
-        String urlSearch = "http://34.211.21.63/Titan/search?lat=37.386051&lon=-122.083855";
+        locationTracker = new LocationTracker(getActivity());
+        locationTracker.getLocation();
+        String urlSearch = "http://34.211.21.63/Titan/search?lat=" +
+                Double.toString(locationTracker.getLatitude()) +
+                "&lon=" + Double.toString(locationTracker.getLongitude()) + "&user_id=1111";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         StringRequest stringRequest2 = new StringRequest(Request.Method.GET,
                 urlSearch, new Response.Listener<String>() {
@@ -94,6 +99,7 @@ public class BackendListFragment extends Fragment {
                     restaurant.setLng(item.getDouble("longitude"));
                     restaurant.setStars(item.getDouble("rating"));
                     restaurant.setUrl(item.getString("image_url"));
+                    restaurant.setItem_id(item.getString("item_id"));
 
                     JSONArray category = item.getJSONArray("categories");
                     List<String> cat = new ArrayList<String>();

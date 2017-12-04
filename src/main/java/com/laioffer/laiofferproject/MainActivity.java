@@ -29,6 +29,19 @@ public class MainActivity extends AppCompatActivity implements RestaurantListFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        String service = intent.getStringExtra("Service");
+
+        if (service.equals("Yelp")) {
+            mListFragment = new RestaurantListFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.restaurant_list_container,
+                    mListFragment).commit();
+        } else {
+            mBackendFragment = new BackendListFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.restaurant_list_container,
+                    mBackendFragment).commit();
+        }
+
         // Get ListView object from xml.
         //ListView eventListView = (ListView) findViewById(R.id.event_list);
 
